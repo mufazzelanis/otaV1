@@ -2,14 +2,32 @@ import type { CSSProperties, ReactNode } from "react";
 import type { SectionHeading } from "@/lib/types";
 import { Reveal } from "./reveal";
 
+/** Renders `*words*` in a title as the italic gradient highlight; everything else stays plain. */
+export function RichTitle({ text, dark = false }: { text: string; dark?: boolean }) {
+  const parts = text.split(/\*([^*]+)\*/);
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 ? (
+          <span key={i} className={`text-highlight ${dark ? "text-highlight-dark" : ""}`}>
+            {part}
+          </span>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
 export function Eyebrow({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
   return (
     <span
-      className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] ${
-        dark ? "text-accent" : "text-brand"
+      className={`inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.2em] ${
+        dark ? "text-[color-mix(in_oklab,var(--brand)_35%,white)]" : "text-brand"
       }`}
     >
-      <span className={`h-1.5 w-1.5 rounded-full ${dark ? "bg-accent" : "bg-brand"}`} />
+      <span className="h-px w-6 bg-current opacity-70" />
       {children}
     </span>
   );
@@ -20,26 +38,28 @@ export function Heading({
   align = "center",
   dark = false,
   aside,
+  className = "mb-14",
 }: {
   heading: SectionHeading;
   align?: "center" | "left";
   dark?: boolean;
   aside?: ReactNode;
+  className?: string;
 }) {
   const center = align === "center";
   return (
-    <Reveal className={`mb-12 flex flex-col gap-6 ${center ? "items-center text-center" : "md:flex-row md:items-end md:justify-between"}`}>
-      <div className={center ? "mx-auto max-w-2xl" : "max-w-2xl"}>
+    <Reveal className={`flex flex-col gap-6 ${className} ${center ? "items-center text-center" : "md:flex-row md:items-end md:justify-between"}`}>
+      <div className={center ? "mx-auto max-w-3xl" : "max-w-2xl"}>
         {heading.eyebrow && <Eyebrow dark={dark}>{heading.eyebrow}</Eyebrow>}
         <h2
-          className={`mt-3 font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl ${
+          className={`mt-4 font-display text-3xl font-bold leading-[1.12] tracking-tight text-balance sm:text-4xl lg:text-[2.75rem] ${
             dark ? "text-white" : "text-ink"
           }`}
         >
-          {heading.title}
+          <RichTitle text={heading.title} dark={dark} />
         </h2>
         {heading.subtitle && (
-          <p className={`mt-4 text-base leading-relaxed text-pretty sm:text-lg ${dark ? "text-white/70" : "text-muted"}`}>
+          <p className={`mx-auto mt-5 max-w-2xl text-base leading-relaxed text-pretty ${dark ? "text-white/65" : "text-muted"}`}>
             {heading.subtitle}
           </p>
         )}

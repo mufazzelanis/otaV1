@@ -1,7 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { DEFAULT_CONTENT } from "./default-content";
 import { dataFile, readJson, updateJson, writeJson } from "./storage";
-import type { Content, ContentKey, Lead } from "./types";
+import type { Content, ContentKey, Lead, SectionConfig } from "./types";
 
 const CONTENT_FILE = dataFile("content.json");
 const LEADS_FILE = dataFile("leads.json");
@@ -10,6 +10,17 @@ export const CONTENT_TAG = "content";
 
 const isPlainObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
 
+/** Insert homepage sections added to the defaults after the saved layout, each right after its default predecessor. */
+function mergeSections(stored: SectionConfig[]): SectionConfig[] {
+  const out = [...stored];
+  DEFAULT_CONTENT.sections.forEach((def, i) => {
+    if (out.some((s) => s.id === def.id)) return;
+    const prev = DEFAULT_CONTENT.sections.slice(0, i).reverse().find((p) => out.some((s) => s.id === p.id));
+    out.splice(prev ? out.findIndex((s) => s.id === prev.id) + 1 : 0, 0, def);
+  });
+  return out;
+}
+
 /** Fill in keys added to the defaults after a file was saved, including new fields inside object sections. */
 function mergeDefaults(stored: Partial<Content>): Content {
   const out: Record<string, unknown> = { ...DEFAULT_CONTENT };
@@ -17,6 +28,7 @@ function mergeDefaults(stored: Partial<Content>): Content {
     const fallback = (DEFAULT_CONTENT as Record<string, unknown>)[key];
     out[key] = isPlainObject(fallback) && isPlainObject(value) ? { ...fallback, ...value } : value;
   }
+  if (Array.isArray(stored.sections)) out.sections = mergeSections(stored.sections);
   return out as Content;
 }
 

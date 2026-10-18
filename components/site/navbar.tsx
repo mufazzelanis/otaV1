@@ -21,12 +21,12 @@ const useIsClient = () => useSyncExternalStore(noopSubscribe, () => true, () => 
 
 function Badge({ text }: { text: string }) {
   if (!text) return null;
-  return <span className="rounded-full bg-accent px-1.5 py-px text-[10px] font-bold uppercase leading-4 text-accent-ink">{text}</span>;
+  return <span className="rounded-full bg-brand px-1.5 py-px text-[10px] font-bold uppercase leading-4 text-white">{text}</span>;
 }
 
 const labelCls = (n: NavItem) =>
   `flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition ${
-    n.highlight ? "text-accent hover:brightness-110" : "text-white/80 hover:text-white"
+    n.highlight ? "text-brand hover:bg-brand/5" : "text-slate-600 hover:bg-slate-100/80 hover:text-ink"
   }`;
 
 export function Navbar({
@@ -158,9 +158,7 @@ export function Navbar({
   return (
     <header
       ref={headerRef}
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || panel ? "border-b border-white/10 bg-brand-dark/90 backdrop-blur-xl" : "bg-transparent"
-      }`}
+      className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 lg:pt-4"
     >
       {/* Off-screen copy of the links, used only to measure how wide the row needs to be. */}
       <div className="pointer-events-none absolute left-0 top-0 h-px w-px overflow-hidden" aria-hidden>
@@ -174,9 +172,17 @@ export function Navbar({
         </div>
       </div>
 
-      <nav ref={navRef} className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-18 lg:px-8">
+      <nav ref={navRef} className="relative isolate mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 pl-4 pr-2 sm:pl-6 lg:h-16">
+        {/* The pill surface is its own layer: a backdrop-filter on <nav> would become the
+            containing block of the fixed dropdown panels and throw off their position. */}
+        <span
+          aria-hidden
+          className={`absolute inset-0 -z-10 rounded-full border bg-white/85 backdrop-blur-xl transition-shadow duration-300 ${
+            scrolled || panel ? "border-slate-200/80 shadow-xl shadow-slate-900/10" : "border-white/80 shadow-lg shadow-slate-900/5"
+          }`}
+        />
         <Link ref={logoRef} href="/" aria-label={`${brandName} home`} className="min-w-0 shrink-0">
-          <Logo text={logoText} name={brandName} />
+          <Logo text={logoText} name={brandName} light={false} />
         </Link>
 
         <div className={`${showDesktop} min-w-0 items-center gap-0.5`}>
@@ -215,11 +221,11 @@ export function Navbar({
         <div ref={actionsRef} className="flex shrink-0 items-center gap-2">
           <Link
             href="/contact"
-            className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-lg shadow-accent/25 transition hover:brightness-105 sm:inline-flex"
+            className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand/30 transition hover:-translate-y-px hover:brightness-110 sm:inline-flex"
           >
             {ctaLabel}
           </Link>
-          <button className={`${showBurger} grid h-10 w-10 place-items-center rounded-lg text-white`} onClick={() => setDrawer(true)} aria-label="Open menu" aria-expanded={drawer}>
+          <button className={`${showBurger} grid h-10 w-10 place-items-center rounded-full text-ink hover:bg-slate-100`} onClick={() => setDrawer(true)} aria-label="Open menu" aria-expanded={drawer}>
             <Menu className="h-6 w-6" />
           </button>
         </div>

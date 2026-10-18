@@ -1,10 +1,10 @@
 {
   "theme": {
-    "preset": "trust",
-    "dark": "#0B2545",
-    "brand": "#087E8B",
-    "accent": "#F4B942",
-    "accentInk": "#1A1300"
+    "preset": "indigo",
+    "dark": "#0A1550",
+    "brand": "#4F46E5",
+    "accent": "#A78BFA",
+    "accentInk": "#1E1048"
   },
   "settings": {
     "brandName": "Tripnexa",
@@ -227,7 +227,8 @@
         "POST /v1/flight/book",
         "POST /v1/flight/ticket"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Core"
     },
     {
       "id": "pr2",
@@ -249,7 +250,8 @@
         "GET /v1/hotel/{id}",
         "POST /v1/hotel/book"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Core"
     },
     {
       "id": "pr3",
@@ -269,7 +271,8 @@
         "POST /v1/transfer/search",
         "POST /v1/transfer/book"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Ground"
     },
     {
       "id": "pr5",
@@ -289,7 +292,8 @@
         "GET /v1/activity/search",
         "POST /v1/activity/book"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Experiences"
     },
     {
       "id": "pr6",
@@ -309,7 +313,8 @@
         "GET /v1/package/search",
         "POST /v1/package/order"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Packages"
     },
     {
       "id": "pr9",
@@ -329,7 +334,8 @@
         "GET /v1/lounge/search",
         "POST /v1/lounge/book"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Add-on"
     },
     {
       "id": "pr10",
@@ -348,7 +354,8 @@
         "GET /v1/fasttrack/search",
         "POST /v1/fasttrack/book"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Add-on"
     },
     {
       "id": "pr11",
@@ -366,7 +373,8 @@
       "endpoints": [
         "POST /v1/meetgreet/book"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Add-on"
     },
     {
       "id": "pr12",
@@ -386,7 +394,8 @@
         "GET /v1/esim/plans",
         "POST /v1/esim/order"
       ],
-      "visible": true
+      "visible": true,
+      "tag": "Connectivity"
     }
   ],
   "useCases": [
@@ -471,6 +480,9 @@
   ],
   "compare": [
     {
+      "group": "Speed & setup",
+      "note": "From signup to live bookings",
+      "themMark": "no",
       "id": "c1",
       "label": "Time to first booking",
       "us": "Days",
@@ -478,6 +490,9 @@
       "visible": true
     },
     {
+      "group": "Speed & setup",
+      "note": "Agreements you sign and manage",
+      "themMark": "no",
       "id": "c2",
       "label": "Supplier contracts",
       "us": "1",
@@ -485,6 +500,8 @@
       "visible": true
     },
     {
+      "group": "Technology",
+      "note": "One schema across every supplier",
       "id": "c3",
       "label": "Data normalization",
       "us": "yes",
@@ -492,6 +509,9 @@
       "visible": true
     },
     {
+      "group": "Technology",
+      "note": "Test before you go live",
+      "themMark": "partial",
       "id": "c4",
       "label": "Sandbox environment",
       "us": "yes",
@@ -499,6 +519,8 @@
       "visible": true
     },
     {
+      "group": "Technology",
+      "note": "Flights, hotels, transfers & more",
       "id": "c5",
       "label": "Multi-category coverage",
       "us": "yes",
@@ -506,6 +528,9 @@
       "visible": true
     },
     {
+      "group": "Cost",
+      "note": "Ongoing maintenance effort",
+      "themMark": "no",
       "id": "c6",
       "label": "Engineering overhead",
       "us": "Low",
@@ -650,8 +675,8 @@
       "subtitle": "Traditional travel integrations are slow, fragmented and expensive. We change that, whether you're building an OTA, a corporate tool or a niche platform."
     },
     "products": {
-      "eyebrow": "Our ecosystem",
-      "title": "One API. Unlimited travel inventory.",
+      "eyebrow": "Core products",
+      "title": "One API. *Unlimited travel inventory.*",
       "subtitle": "Structured, normalized and ready to sell. Reach the whole globe through a single connection."
     },
     "usecases": {
@@ -661,8 +686,8 @@
     },
     "why": {
       "eyebrow": "Why choose us",
-      "title": "Go from startup to global travel agency, fast.",
-      "subtitle": ""
+      "title": "Go from startup to global travel agency, *fast.*",
+      "subtitle": "See how a unified travel API measures up against building supplier integrations yourself, capability by capability."
     },
     "steps": {
       "eyebrow": "How it works",
@@ -671,12 +696,12 @@
     },
     "testimonials": {
       "eyebrow": "Loved by builders",
-      "title": "Teams ship faster with us.",
+      "title": "Teams ship *faster with us.*",
       "subtitle": ""
     },
     "faq": {
       "eyebrow": "FAQ",
-      "title": "Everything you need to know.",
+      "title": "Everything you need *to know.*",
       "subtitle": "Can't find what you're looking for? Get in touch."
     },
     "resources": {
@@ -686,7 +711,7 @@
     }
   },
   "cta": {
-    "title": "Start in the sandbox. Go live when you're ready.",
+    "title": "Start in the sandbox. *Go live when you're ready.*",
     "text": "Book a short kick-off call, get sandbox credentials at no charge, and build against the same schema you'll use in production.",
     "primary": "Book a demo",
     "secondary": "Talk to sales"
@@ -694,12 +719,7 @@
   "sections": [
     {
       "id": "hero",
-      "label": "Hero + API playground",
-      "visible": true
-    },
-    {
-      "id": "stats",
-      "label": "Stats bar",
+      "label": "Hero",
       "visible": true
     },
     {
@@ -708,18 +728,8 @@
       "visible": true
     },
     {
-      "id": "announcement",
-      "label": "Announcement band",
-      "visible": true
-    },
-    {
-      "id": "about",
-      "label": "About",
-      "visible": true
-    },
-    {
-      "id": "benefits",
-      "label": "Benefits",
+      "id": "challenge",
+      "label": "Challenge: without vs. with",
       "visible": true
     },
     {
@@ -728,18 +738,38 @@
       "visible": true
     },
     {
-      "id": "usecases",
-      "label": "Use cases",
+      "id": "inventory",
+      "label": "Live inventory + API playground",
+      "visible": true
+    },
+    {
+      "id": "ecosystem",
+      "label": "Product ecosystem",
       "visible": true
     },
     {
       "id": "why",
-      "label": "Why us + comparison",
+      "label": "Comparison table",
       "visible": true
     },
     {
-      "id": "steps",
-      "label": "How it works",
+      "id": "stats",
+      "label": "Stats bar",
+      "visible": true
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics & reporting",
+      "visible": true
+    },
+    {
+      "id": "dashboard",
+      "label": "Dashboard preview",
+      "visible": true
+    },
+    {
+      "id": "integrations",
+      "label": "Integrations",
       "visible": true
     },
     {
@@ -748,19 +778,54 @@
       "visible": true
     },
     {
+      "id": "sync",
+      "label": "Web + mobile sync",
+      "visible": true
+    },
+    {
       "id": "faq",
       "label": "FAQ",
       "visible": true
     },
     {
-      "id": "resources",
-      "label": "Resources",
+      "id": "pricing",
+      "label": "Pricing",
       "visible": true
     },
     {
       "id": "cta",
-      "label": "Final call to action",
+      "label": "Book a demo + contact",
       "visible": true
+    },
+    {
+      "id": "announcement",
+      "label": "Announcement band",
+      "visible": false
+    },
+    {
+      "id": "about",
+      "label": "About",
+      "visible": false
+    },
+    {
+      "id": "benefits",
+      "label": "Benefits",
+      "visible": false
+    },
+    {
+      "id": "usecases",
+      "label": "Use cases",
+      "visible": false
+    },
+    {
+      "id": "steps",
+      "label": "How it works",
+      "visible": false
+    },
+    {
+      "id": "resources",
+      "label": "Resources",
+      "visible": false
     }
   ],
   "navigation": [

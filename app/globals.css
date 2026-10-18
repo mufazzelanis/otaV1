@@ -33,6 +33,22 @@
   --animate-orbit-reverse: orbit-spin 48s linear infinite reverse;
   --animate-orbit-slow: orbit-spin 32s linear infinite;
   --animate-orbit-reverse-slow: orbit-spin 32s linear infinite reverse;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-dash: dash 1.6s linear infinite;
+  --animate-grow: grow 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-blink: blink 1.8s ease-in-out infinite;
+
+  @keyframes dash {
+    to { stroke-dashoffset: -24; }
+  }
+  @keyframes grow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
 
   /* box-shadow ring: pulses outward without changing layout size */
   @keyframes wa-ring {
@@ -89,6 +105,53 @@ body {
     linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
   background-size: auto, auto, 56px 56px, 56px 56px;
+}
+
+/* Italic gradient highlight used inside headings (*word* in admin titles). */
+.text-highlight {
+  font-style: italic;
+  font-weight: 600;
+  padding-right: 0.08em; /* keep the italic overhang inside the clip */
+  background-image: linear-gradient(100deg, var(--brand) 10%, color-mix(in oklab, var(--brand) 45%, var(--accent)) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-highlight-dark {
+  background-image: linear-gradient(100deg, color-mix(in oklab, var(--brand) 35%, white) 10%, var(--accent) 90%);
+}
+
+/* Light homepage hero: soft sky with drifting cloud glows and a faint grid. */
+.sky-bg {
+  background-color: #eef2fb;
+  background-image:
+    radial-gradient(50% 60% at 80% 20%, color-mix(in oklab, var(--brand) 16%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 0% 100%, rgba(255, 255, 255, 0.95), transparent 70%),
+    radial-gradient(30% 35% at 55% 0%, rgba(255, 255, 255, 0.9), transparent 70%),
+    linear-gradient(180deg, #e6ecfa 0%, #f3f5fc 60%, #ffffff 100%);
+}
+.sky-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--brand) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--brand) 7%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at 70% 40%, black 20%, transparent 70%);
+}
+
+/* Deep navy section surface with brand glows. */
+.navy-bg {
+  background-color: var(--brand-dark);
+  background-image:
+    radial-gradient(55% 45% at 85% 0%, color-mix(in oklab, var(--brand) 40%, transparent), transparent 70%),
+    radial-gradient(45% 45% at 0% 100%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 70%);
+}
+.ink-bg {
+  background-color: color-mix(in oklab, var(--brand-dark) 45%, #0b0d17);
+  background-image:
+    radial-gradient(50% 40% at 50% 0%, color-mix(in oklab, var(--brand) 22%, transparent), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: auto, 44px 44px, 44px 44px;
 }
 
 .dot-bg {

@@ -46,6 +46,8 @@ export type Announcement = {
 };
 
 export type Hero = {
+  /** Small pill before the badge text, e.g. "v1". */
+  badgeTag: string;
   badge: string;
   titleLines: string[];
   highlight: string;
@@ -88,6 +90,8 @@ export type Product = {
   description: string;
   features: string[];
   endpoints: string[];
+  /** Short pill on the homepage feature card, e.g. "Core". */
+  tag?: string;
   visible: boolean;
 };
 
@@ -95,7 +99,51 @@ export type UseCase = { id: string; icon: string; tone: Tone; title: string; tex
 
 export type Reason = { id: string; icon: string; title: string; text: string; visible: boolean };
 
-export type CompareRow = { id: string; label: string; us: string; them: string; visible: boolean };
+export type CompareMark = "yes" | "partial" | "no";
+
+export type CompareRow = {
+  id: string;
+  label: string;
+  us: string;
+  them: string;
+  /** Rows sharing a group are listed under one category header. */
+  group?: string;
+  note?: string;
+  usMark?: CompareMark;
+  themMark?: CompareMark;
+  visible: boolean;
+};
+
+export type Challenge = {
+  id: string;
+  icon: string;
+  problem: string;
+  problemText: string;
+  problemTag: string;
+  solutionIcon: string;
+  solution: string;
+  solutionText: string;
+  solutionTag: string;
+  visible: boolean;
+};
+
+export type FeaturePoint = { id: string; icon: string; title: string; text: string };
+
+export type EcosystemModule = { id: string; label: string; items: string[] };
+
+export type IntegrationStatus = "live" | "certified" | "new" | "soon";
+
+export type Integration = {
+  id: string;
+  name: string;
+  code: string;
+  group: string;
+  note: string;
+  status: IntegrationStatus;
+  visible: boolean;
+};
+
+export type PricePlan = { id: string; label: string; prefix: string; amount: string; suffix: string; note: string };
 
 export type Step = { id: string; title: string; text: string; visible: boolean };
 
@@ -115,10 +163,28 @@ export type Resource = { id: string; title: string; text: string; tag: string; v
 
 export type Partner = { id: string; name: string; visible: boolean };
 
+/** Wrap words in *asterisks* in a title to render them as the italic gradient highlight. */
 export type SectionHeading = { eyebrow: string; title: string; subtitle: string };
+
+/** A split section: heading + list of points beside an illustration. */
+export type Showcase = SectionHeading & { points: FeaturePoint[] };
+
+export type Ecosystem = SectionHeading & { modules: EcosystemModule[] };
+
+export type Sync = SectionHeading & { points: string[] };
+
+export type Pricing = SectionHeading & { plans: PricePlan[]; primary: string; secondary: string };
 
 export type SectionId =
   | "hero"
+  | "challenge"
+  | "inventory"
+  | "ecosystem"
+  | "analytics"
+  | "dashboard"
+  | "integrations"
+  | "sync"
+  | "pricing"
   | "stats"
   | "announcement"
   | "partners"
@@ -136,10 +202,13 @@ export type SectionId =
 export type SectionConfig = { id: SectionId; label: string; visible: boolean };
 
 export type Cta = {
+  eyebrow: string;
   title: string;
   text: string;
   primary: string;
   secondary: string;
+  /** Short reassurance points under the contact cards. */
+  perks: string[];
 };
 
 export type NavChild = { id: string; label: string; href: string; icon: string; description: string };
@@ -200,12 +269,20 @@ export type Content = {
   useCases: UseCase[];
   reasons: Reason[];
   compare: CompareRow[];
+  challenges: Challenge[];
+  inventory: Showcase;
+  ecosystem: Ecosystem;
+  analytics: Showcase;
+  integrations: Integration[];
+  sync: Sync;
+  pricing: Pricing;
   steps: Step[];
   testimonials: Testimonial[];
   faqs: Faq[];
   resources: Resource[];
   headings: Record<
-    "benefits" | "products" | "usecases" | "why" | "steps" | "testimonials" | "faq" | "resources" | "partners",
+    | "benefits" | "products" | "usecases" | "why" | "steps" | "testimonials" | "faq" | "resources" | "partners"
+    | "challenge" | "dashboard" | "integrations",
     SectionHeading
   >;
   cta: Cta;

@@ -2,9 +2,18 @@ import type { Theme } from "./types";
 
 export type ThemePreset = Theme & { name: string; note: string };
 
-// The four palettes the brand team shortlisted. `dark` drives hero/footer
+// Palettes offered in the Theme panel; the first is the default. `dark` drives hero/footer
 // surfaces, `brand` drives buttons and links, `accent` highlights deals and CTAs.
 export const THEME_PRESETS: ThemePreset[] = [
+  {
+    preset: "indigo",
+    name: "Indigo SaaS",
+    note: "Navy + Indigo + Violet. Modern travel-tech platform.",
+    dark: "#0A1550",
+    brand: "#4F46E5",
+    accent: "#A78BFA",
+    accentInk: "#1E1048",
+  },
   {
     preset: "trust",
     name: "Trust & Travel",

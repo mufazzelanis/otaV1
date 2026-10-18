@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { Inter, Sora, JetBrains_Mono } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { getContent } from "@/lib/content";
 import { themeToCss } from "@/lib/themes";
 import { env } from "@/lib/env";
 import "./globals.css";
 
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
-const heading = Sora({ variable: "--font-heading", subsets: ["latin"], weight: ["600", "700", "800"] });
+const heading = Plus_Jakarta_Sans({ variable: "--font-heading", subsets: ["latin"], weight: ["500", "600", "700", "800"], style: ["normal", "italic"] });
 const code = JetBrains_Mono({ variable: "--font-code", subsets: ["latin"] });
 
 export async function generateMetadata(): Promise<Metadata> {

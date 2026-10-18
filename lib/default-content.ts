@@ -41,6 +41,7 @@ export const DEFAULT_CONTENT: Content = {
   },
 
   hero: {
+    badgeTag: "v1",
     badge: "Travel API for OTAs, TMCs and travel platforms",
     titleLines: ["One travel API.", "Flights, hotels and more"],
     highlight: "in one schema",
@@ -173,6 +174,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Search hundreds of airlines across GDS, airline-direct NDC and low-cost carriers in one request. Results arrive merged, de-duplicated and ranked, with branded fares, ancillaries and seat maps in one schema.",
       features: ["Unified GDS + NDC + LCC search", "Branded fares & ancillaries", "Seat maps and SSRs", "Instant ticketing & void", "Post-booking changes and refunds"],
       endpoints: ["POST /v1/flight/search", "POST /v1/flight/price", "POST /v1/flight/book", "POST /v1/flight/ticket"],
+      tag: "Core",
       visible: true,
     },
     {
@@ -181,6 +183,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Content-rich hotel inventory mapped to a single property ID, with photos, amenities, cancellation policies and live rates from multiple suppliers.",
       features: ["2M+ properties mapped", "Rich content and imagery", "Live rates & availability", "Flexible cancellation data", "Multi-room bookings"],
       endpoints: ["POST /v1/hotel/search", "GET /v1/hotel/{id}", "POST /v1/hotel/book"],
+      tag: "Core",
       visible: true,
     },
     {
@@ -189,6 +192,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Door-to-door transfers worldwide with fixed prices, vehicle classes and meet & greet options.",
       features: ["Airport, hotel & address pickups", "Fixed upfront pricing", "Meet & greet add-on", "Free cancellation windows"],
       endpoints: ["POST /v1/transfer/search", "POST /v1/transfer/book"],
+      tag: "Ground",
       visible: true,
     },
     {
@@ -197,6 +201,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Bookable experiences with live availability, timeslots and instant mobile vouchers.",
       features: ["300k+ experiences", "Timeslot availability", "Instant mobile vouchers", "Multi-language content"],
       endpoints: ["GET /v1/activity/search", "POST /v1/activity/book"],
+      tag: "Experiences",
       visible: true,
     },
     {
@@ -205,6 +210,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Sell curated multi-day packages with itineraries, inclusions and validated pricing.",
       features: ["City and theme search", "Day-by-day itineraries", "Price validation", "Order & issuance"],
       endpoints: ["GET /v1/package/search", "POST /v1/package/order"],
+      tag: "Packages",
       visible: true,
     },
     {
@@ -213,6 +219,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Upsell lounge access at checkout with instant confirmation and QR passes.",
       features: ["1,500+ lounges", "Instant QR passes", "Checkout upsell", "Flexible cancellation"],
       endpoints: ["GET /v1/lounge/search", "POST /v1/lounge/book"],
+      tag: "Add-on",
       visible: true,
     },
     {
@@ -221,6 +228,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Departure, arrival and transit fast track services with a dedicated agent.",
       features: ["200+ airports", "Departure & arrival", "Transit assistance"],
       endpoints: ["GET /v1/fasttrack/search", "POST /v1/fasttrack/book"],
+      tag: "Add-on",
       visible: true,
     },
     {
@@ -229,6 +237,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "VIP arrival and departure assistance for premium travellers and families.",
       features: ["Multilingual assistants", "Baggage help", "VIP escorts"],
       endpoints: ["POST /v1/meetgreet/book"],
+      tag: "Add-on",
       visible: true,
     },
     {
@@ -237,6 +246,7 @@ export const DEFAULT_CONTENT: Content = {
       description: "Sell data plans with instant activation, no roaming bills and in-app top-ups.",
       features: ["175+ countries", "Instant QR activation", "Top-ups", "Usage tracking"],
       endpoints: ["GET /v1/esim/plans", "POST /v1/esim/order"],
+      tag: "Connectivity",
       visible: true,
     },
   ],
@@ -258,13 +268,113 @@ export const DEFAULT_CONTENT: Content = {
   ],
 
   compare: [
-    { id: "c1", label: "Time to first booking", us: "Days", them: "6–12 months", visible: true },
-    { id: "c2", label: "Supplier contracts", us: "1", them: "Dozens", visible: true },
-    { id: "c3", label: "Data normalization", us: "yes", them: "no", visible: true },
-    { id: "c4", label: "Sandbox environment", us: "yes", them: "Limited", visible: true },
-    { id: "c5", label: "Multi-category coverage", us: "yes", them: "no", visible: true },
-    { id: "c6", label: "Engineering overhead", us: "Low", them: "Very high", visible: true },
+    { id: "c1", group: "Speed & setup", label: "Time to first booking", note: "From signup to live bookings", us: "Days", them: "6–12 months", themMark: "no", visible: true },
+    { id: "c2", group: "Speed & setup", label: "Supplier contracts", note: "Agreements you sign and manage", us: "1", them: "Dozens", themMark: "no", visible: true },
+    { id: "c3", group: "Technology", label: "Data normalization", note: "One schema across every supplier", us: "yes", them: "no", visible: true },
+    { id: "c4", group: "Technology", label: "Sandbox environment", note: "Test before you go live", us: "yes", them: "Limited", themMark: "partial", visible: true },
+    { id: "c5", group: "Technology", label: "Multi-category coverage", note: "Flights, hotels, transfers & more", us: "yes", them: "no", visible: true },
+    { id: "c6", group: "Cost", label: "Engineering overhead", note: "Ongoing maintenance effort", us: "Low", them: "Very high", themMark: "no", visible: true },
   ],
+
+  challenges: [
+    {
+      id: "ch1", icon: "layers", problem: "Siloed supplier connections", problemTag: "Months of integration",
+      problemText: "GDS, NDC, low-cost carriers and hotel suppliers each need their own contract, credentials and integration, with no shared data model.",
+      solutionIcon: "merge", solution: "One normalized API", solutionTag: "Single source of truth",
+      solutionText: "Every supplier sits behind a single REST schema, so search, pricing and booking work the same way across all inventory.",
+      visible: true,
+    },
+    {
+      id: "ch2", icon: "support", problem: "Manual post-booking work", problemTag: "Ops bottleneck",
+      problemText: "Voids, refunds and reissues are handled supplier by supplier, often over email or extranets, and errors compound silently.",
+      solutionIcon: "zap", solution: "Automated booking lifecycle", solutionTag: "End-to-end via API",
+      solutionText: "Ticketing, voids, refunds and changes run through the same API calls, with a status trail for every booking.",
+      visible: true,
+    },
+    {
+      id: "ch3", icon: "chart", problem: "Unpredictable unit costs", problemTag: "Shrinking margins",
+      problemText: "Percentage-based fees and per-supplier pricing make margins hard to forecast as your volume grows.",
+      solutionIcon: "wallet", solution: "Flat, predictable pricing", solutionTag: "Flat fee per booking",
+      solutionText: "A flat fee per booking, never a percentage, so your unit economics stay clear from the first sale.",
+      visible: true,
+    },
+    {
+      id: "ch4", icon: "code", problem: "Supplier quirks in your codebase", problemTag: "Engineering drag",
+      problemText: "Every supplier's edge cases leak into your product, and engineers spend their time firefighting instead of shipping.",
+      solutionIcon: "shield", solution: "Clean developer experience", solutionTag: "Ship faster",
+      solutionText: "Normalized JSON, sandbox keys and documented errors keep supplier complexity out of your stack.",
+      visible: true,
+    },
+  ],
+
+  inventory: {
+    eyebrow: "Live inventory",
+    title: "Every fare source through *one search call.*",
+    subtitle: "Search flights, hotels and more across every connected source in a single request, with live pricing and full availability. Try it right here.",
+    points: [
+      { id: "in1", icon: "plane", title: "Flights + hotels", text: "Combined across GDS airlines, NDC, low-cost carriers and hotel suppliers in one request." },
+      { id: "in2", icon: "globe", title: "GDS, NDC and LCC connections", text: "Pre-integrated and maintained by us, so new sources appear without new code on your side." },
+      { id: "in3", icon: "zap", title: "Smart rate caching", text: "Intelligent caching keeps searches fast, while every price is re-validated before booking." },
+    ],
+  },
+
+  ecosystem: {
+    eyebrow: "Product ecosystem",
+    title: "One API to drive *every travel product.*",
+    subtitle: "Every product shares the same schema, credentials and booking flow: add a new category without starting a new integration.",
+    modules: [
+      { id: "m1", label: "Air", items: ["Search", "Price", "Book", "Ticket"] },
+      { id: "m2", label: "Stay", items: ["Hotels", "Rooms", "Rates", "Vouchers"] },
+      { id: "m3", label: "Ground", items: ["Transfers", "Activities", "Tours", "Packages"] },
+      { id: "m4", label: "Add-ons", items: ["eSIM", "Lounges", "Fast track", "Meet & greet"] },
+    ],
+  },
+
+  analytics: {
+    eyebrow: "Analytics & reporting",
+    title: "Better margins start with *better data.*",
+    subtitle: "Every search, booking and ticket flows through one pipeline, so you can see what sells, where and through which channel, as it happens.",
+    points: [
+      { id: "an1", icon: "chart", title: "Live booking dashboard", text: "Bookings, tickets and payments update the moment a transaction is confirmed." },
+      { id: "an2", icon: "map", title: "Route & destination insights", text: "See where demand is strongest by route, region and season." },
+      { id: "an3", icon: "users", title: "Channel performance", text: "Compare conversion and revenue across your web, mobile and partner channels." },
+      { id: "an4", icon: "layers", title: "Exportable reports", text: "Download booking and reconciliation reports, or pull the same data through the API." },
+    ],
+  },
+
+  integrations: [
+    { id: "ig1", group: "Flight supply", code: "GDS", name: "Global GDS", note: "Full-content flights", status: "live", visible: true },
+    { id: "ig2", group: "Flight supply", code: "NDC", name: "NDC airlines", note: "Airline-direct offers", status: "live", visible: true },
+    { id: "ig3", group: "Flight supply", code: "LCC", name: "Low-cost carriers", note: "Direct LCC content", status: "live", visible: true },
+    { id: "ig4", group: "Flight supply", code: "BFA", name: "Branded fares", note: "Bundles, seats & bags", status: "certified", visible: true },
+    { id: "ig5", group: "Stay & ground", code: "HTL", name: "Hotel chains", note: "Direct chain rates", status: "live", visible: true },
+    { id: "ig6", group: "Stay & ground", code: "BED", name: "Bed banks", note: "Wholesale inventory", status: "live", visible: true },
+    { id: "ig7", group: "Stay & ground", code: "TRF", name: "Transfers", note: "Airport & city rides", status: "live", visible: true },
+    { id: "ig8", group: "Stay & ground", code: "ACT", name: "Activities", note: "Tours & attractions", status: "certified", visible: true },
+    { id: "ig9", group: "Travel add-ons", code: "SIM", name: "eSIM carriers", note: "175+ countries", status: "new", visible: true },
+    { id: "ig10", group: "Travel add-ons", code: "LNG", name: "Airport lounges", note: "1,500+ lounges", status: "live", visible: true },
+    { id: "ig11", group: "Travel add-ons", code: "FST", name: "Fast track", note: "200+ airports", status: "live", visible: true },
+    { id: "ig12", group: "Travel add-ons", code: "+", name: "More coming", note: "Request a supplier", status: "soon", visible: true },
+  ],
+
+  sync: {
+    eyebrow: "Seamless sync",
+    title: "One API for your web *and mobile app.*",
+    subtitle: "Build your website and mobile app on the same endpoints. Travellers start a search on one device and pick up right where they left off on another.",
+    points: ["Same schema on web and mobile", "Webhooks on every booking event", "Smart caching for fast results", "Scoped, secure API keys"],
+  },
+
+  pricing: {
+    eyebrow: "Transparent pricing",
+    title: "One API. *No hidden fees.*",
+    subtitle: "Start free in the sandbox and pay a flat fee only when you book. No percentage of your sales, no revenue share, no surprises.",
+    plans: [
+      { id: "pl1", label: "Sandbox", prefix: "$", amount: "0", suffix: "", note: "Full API access with test data" },
+      { id: "pl2", label: "Production", prefix: "", amount: "Flat", suffix: "/booking", note: "Never a percentage of your sales" },
+    ],
+    primary: "Book a free demo",
+    secondary: "Talk to sales",
+  },
 
   steps: [
     { id: "st1", title: "Sign up", text: "Register your business and receive sandbox API credentials instantly.", visible: true },
@@ -298,37 +408,63 @@ export const DEFAULT_CONTENT: Content = {
   headings: {
     partners: { eyebrow: "Connected supply", title: "Inventory from every corner of travel", subtitle: "" },
     benefits: { eyebrow: "Why now", title: "Launch your travel business in days, not months.", subtitle: "Traditional travel integrations are slow, fragmented and expensive. We change that, whether you're building an OTA, a corporate tool or a niche platform." },
-    products: { eyebrow: "Our ecosystem", title: "One API. Unlimited travel inventory.", subtitle: "Structured, normalized and ready to sell. Reach the whole globe through a single connection." },
+    products: { eyebrow: "Core products", title: "One API. *Unlimited travel inventory.*", subtitle: "Structured, normalized and ready to sell. Reach the whole globe through a single connection." },
     usecases: { eyebrow: "Use cases", title: "Built for the businesses shaping modern travel.", subtitle: "From scrappy startups to established platforms, we're the foundation underneath." },
-    why: { eyebrow: "Why choose us", title: "Go from startup to global travel agency, fast.", subtitle: "" },
+    why: { eyebrow: "Why choose us", title: "Go from startup to global travel agency, *fast.*", subtitle: "See how a unified travel API measures up against building supplier integrations yourself, capability by capability." },
     steps: { eyebrow: "How it works", title: "Start selling in three simple steps.", subtitle: "Going live has never been easier." },
-    testimonials: { eyebrow: "Loved by builders", title: "Teams ship faster with us.", subtitle: "" },
-    faq: { eyebrow: "FAQ", title: "Everything you need to know.", subtitle: "Can't find what you're looking for? Get in touch." },
+    testimonials: { eyebrow: "Loved by builders", title: "Teams ship *faster with us.*", subtitle: "" },
+    faq: { eyebrow: "FAQ", title: "Everything you need *to know.*", subtitle: "Can't find what you're looking for? Get in touch." },
     resources: { eyebrow: "Resources", title: "Go deeper in the Playbook", subtitle: "" },
+    challenge: {
+      eyebrow: "The challenge",
+      title: "Fragmented supplier integrations are *holding back your growth.*",
+      subtitle: "Every new supplier means another contract, another data format and another integration to maintain. One unified travel API replaces that complexity.",
+    },
+    dashboard: {
+      eyebrow: "Dashboard preview",
+      title: "See your entire travel business in *one view.*",
+      subtitle: "Track every booking, channel, payment and destination from one place, powered by the same API your customers book through.",
+    },
+    integrations: {
+      eyebrow: "Integrations",
+      title: "Access every source *your business depends on.*",
+      subtitle: "Real-time inventory from global distribution systems, airline-direct NDC, low-cost carriers, bed banks and ancillary suppliers, all behind one integration.",
+    },
   },
 
   cta: {
-    title: "Start in the sandbox. Go live when you're ready.",
+    eyebrow: "Book a demo",
+    title: "Start in the sandbox. *Go live when you're ready.*",
     text: "Book a short kick-off call, get sandbox credentials at no charge, and build against the same schema you'll use in production.",
     primary: "Book a demo",
     secondary: "Talk to sales",
+    perks: ["Free sandbox credentials", "No commitment required", "30-minute kick-off call", "Reply within one business day"],
   },
 
+  // The redesigned homepage order. Older sections stay available but hidden.
   sections: [
-    { id: "hero", label: "Hero + API playground", visible: true },
-    { id: "stats", label: "Stats bar", visible: true },
+    { id: "hero", label: "Hero", visible: true },
     { id: "partners", label: "Connected supply marquee", visible: true },
-    { id: "announcement", label: "Announcement band", visible: true },
-    { id: "about", label: "About", visible: true },
-    { id: "benefits", label: "Benefits", visible: true },
+    { id: "challenge", label: "Challenge: without vs. with", visible: true },
     { id: "products", label: "Products grid", visible: true },
-    { id: "usecases", label: "Use cases", visible: true },
-    { id: "why", label: "Why us + comparison", visible: true },
-    { id: "steps", label: "How it works", visible: true },
+    { id: "inventory", label: "Live inventory + API playground", visible: true },
+    { id: "ecosystem", label: "Product ecosystem", visible: true },
+    { id: "why", label: "Comparison table", visible: true },
+    { id: "stats", label: "Stats bar", visible: true },
+    { id: "analytics", label: "Analytics & reporting", visible: true },
+    { id: "dashboard", label: "Dashboard preview", visible: true },
+    { id: "integrations", label: "Integrations", visible: true },
     { id: "testimonials", label: "Testimonials", visible: true },
+    { id: "sync", label: "Web + mobile sync", visible: true },
     { id: "faq", label: "FAQ", visible: true },
-    { id: "resources", label: "Resources", visible: true },
-    { id: "cta", label: "Final call to action", visible: true },
+    { id: "pricing", label: "Pricing", visible: true },
+    { id: "cta", label: "Book a demo + contact", visible: true },
+    { id: "announcement", label: "Announcement band", visible: false },
+    { id: "about", label: "About", visible: false },
+    { id: "benefits", label: "Benefits", visible: false },
+    { id: "usecases", label: "Use cases", visible: false },
+    { id: "steps", label: "How it works", visible: false },
+    { id: "resources", label: "Resources", visible: false },
   ],
 
   navigation: DEFAULT_NAVIGATION,

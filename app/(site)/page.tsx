@@ -6,9 +6,21 @@ import {
   PartnersSection, ProductsSection, ResourcesSection, StatsSection, StepsSection,
   TestimonialsSection, UseCasesSection, WhySection,
 } from "@/components/site/sections";
+import {
+  AnalyticsSection, ChallengeSection, DashboardSection, EcosystemSection, IntegrationsSection, InventorySection,
+  PricingSection, SyncSection,
+} from "@/components/site/home-sections";
 
 const SECTIONS: Record<SectionId, ComponentType<{ c: Content }>> = {
   hero: HeroSection,
+  challenge: ChallengeSection,
+  inventory: InventorySection,
+  ecosystem: EcosystemSection,
+  analytics: AnalyticsSection,
+  dashboard: DashboardSection,
+  integrations: IntegrationsSection,
+  sync: SyncSection,
+  pricing: PricingSection,
   stats: StatsSection,
   partners: PartnersSection,
   announcement: AnnouncementSection,

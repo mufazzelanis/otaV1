@@ -31,9 +31,34 @@ export type AdminSection = ObjectSection | CollectionSection;
 
 const visible: Field = { key: "visible", label: "Visible on site", type: "boolean" };
 
+const MARK_OPTIONS = [
+  { value: "", label: "Automatic" },
+  { value: "yes", label: "Check" },
+  { value: "partial", label: "Partial" },
+  { value: "no", label: "Cross" },
+];
+
+const TITLE_HELP = "Wrap words in *asterisks* to show them as the italic highlight.";
+
+/** eyebrow/title/subtitle at the top level of an object section. */
+const ownHeading: Field[] = [
+  { key: "eyebrow", label: "Eyebrow", type: "text" },
+  { key: "title", label: "Title", type: "text", wide: true, help: TITLE_HELP },
+  { key: "subtitle", label: "Subtitle", type: "textarea", wide: true },
+];
+
+const pointsField: Field = {
+  key: "points", label: "Points", type: "repeater", wide: true, itemLabel: "title",
+  fields: [
+    { key: "title", label: "Title", type: "text" },
+    { key: "icon", label: "Icon", type: "icon" },
+    { key: "text", label: "Text", type: "textarea", wide: true },
+  ],
+};
+
 const headingFields = (id: string, name: string): Field[] => [
   { key: `${id}.eyebrow`, label: `${name} · eyebrow`, type: "text" },
-  { key: `${id}.title`, label: `${name} · title`, type: "text", wide: true },
+  { key: `${id}.title`, label: `${name} · title`, type: "text", wide: true, help: TITLE_HELP },
   { key: `${id}.subtitle`, label: `${name} · subtitle`, type: "textarea", wide: true },
 ];
 
@@ -97,10 +122,11 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     key: "hero", kind: "object", label: "Hero", icon: "rocket", group: "Homepage",
     description: "The first screen visitors see.",
     fields: [
+      { key: "badgeTag", label: "Badge pill (e.g. v1)", type: "text" },
       { key: "badge", label: "Badge text", type: "text", wide: true },
       { key: "titleLines", label: "Headline lines (one per line)", type: "lines", wide: true },
       { key: "highlight", label: "Highlighted last line", type: "text" },
-      { key: "videoLabel", label: "Video button label", type: "text" },
+      { key: "videoLabel", label: "Tour dialog eyebrow", type: "text" },
       { key: "subtitle", label: "Subtitle", type: "textarea", wide: true },
       { key: "primaryCta", label: "Primary button", type: "text" },
       { key: "secondaryCta", label: "Secondary button", type: "text" },
@@ -109,7 +135,7 @@ export const ADMIN_SECTIONS: AdminSection[] = [
   },
   {
     key: "playground", kind: "collection", label: "API Playground", icon: "code", group: "Homepage",
-    description: "Tabs in the interactive hero console. Responses animate after the given latency.",
+    description: "Tabs in the interactive API console beside the Live Inventory section. Also feeds the integrations ticker.",
     titleKey: "label", subtitleKey: "endpoint", iconKey: "icon",
     fields: [
       { key: "label", label: "Tab label", type: "text" },
@@ -124,7 +150,7 @@ export const ADMIN_SECTIONS: AdminSection[] = [
   },
   {
     key: "stats", kind: "collection", label: "Stats", icon: "chart", group: "Homepage",
-    description: "Animated counters under the hero.",
+    description: "Animated counters in the stats card under the comparison table.",
     titleKey: "label", subtitleKey: "value",
     fields: [
       { key: "label", label: "Label", type: "text", wide: true },
@@ -180,6 +206,7 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "slug", label: "URL slug", type: "slug", from: "name", help: "Leave empty to generate from the name" },
       { key: "icon", label: "Icon", type: "icon" },
       { key: "tone", label: "Color tone", type: "tone" },
+      { key: "tag", label: "Card tag (e.g. Core)", type: "text" },
       { key: "short", label: "Card description", type: "textarea", wide: true },
       { key: "description", label: "Detail page description", type: "textarea", wide: true },
       { key: "features", label: "Features (one per line)", type: "lines", wide: true },
@@ -212,13 +239,102 @@ export const ADMIN_SECTIONS: AdminSection[] = [
   },
   {
     key: "compare", kind: "collection", label: "Comparison Table", icon: "chart", group: "Homepage",
-    description: 'Use "yes" or "no" to show a check or cross icon.',
-    titleKey: "label", subtitleKey: "us",
+    description: 'Rows with the same group sit under one header. Use "yes" or "no" as a value to show Included / Not available.',
+    titleKey: "label", subtitleKey: "group",
     fields: [
-      { key: "label", label: "Row label", type: "text", wide: true },
+      { key: "label", label: "Row label", type: "text" },
+      { key: "group", label: "Group", type: "text", help: "e.g. Speed & setup" },
+      { key: "note", label: "Small note under the label", type: "text", wide: true },
       { key: "us", label: "Your value", type: "text" },
+      { key: "usMark", label: "Your icon", type: "select", options: MARK_OPTIONS },
       { key: "them", label: "Competitor value", type: "text" },
+      { key: "themMark", label: "Competitor icon", type: "select", options: MARK_OPTIONS },
       visible,
+    ],
+  },
+  {
+    key: "challenges", kind: "collection", label: "Challenge Rows", icon: "zap", group: "Homepage",
+    description: "Each row pairs a problem (left) with how you solve it (right).",
+    titleKey: "problem", subtitleKey: "solution", iconKey: "icon",
+    fields: [
+      { key: "problem", label: "Problem title", type: "text" },
+      { key: "icon", label: "Problem icon", type: "icon" },
+      { key: "problemText", label: "Problem text", type: "textarea", wide: true },
+      { key: "problemTag", label: "Problem tag", type: "text" },
+      { key: "solution", label: "Solution title", type: "text" },
+      { key: "solutionIcon", label: "Solution icon", type: "icon" },
+      { key: "solutionTag", label: "Solution tag", type: "text" },
+      { key: "solutionText", label: "Solution text", type: "textarea", wide: true },
+      visible,
+    ],
+  },
+  {
+    key: "inventory", kind: "object", label: "Live Inventory", icon: "plane", group: "Homepage",
+    description: "Split section beside the interactive API playground.",
+    fields: [...ownHeading, pointsField],
+  },
+  {
+    key: "ecosystem", kind: "object", label: "Ecosystem", icon: "globe", group: "Homepage",
+    description: "Four module cards orbiting your logo.",
+    fields: [
+      ...ownHeading,
+      {
+        key: "modules", label: "Modules (best with 4)", type: "repeater", wide: true, itemLabel: "label",
+        fields: [
+          { key: "label", label: "Label", type: "text" },
+          { key: "items", label: "Items (one per line)", type: "lines" },
+        ],
+      },
+    ],
+  },
+  {
+    key: "analytics", kind: "object", label: "Analytics", icon: "chart", group: "Homepage",
+    description: "Split section beside the revenue dashboard card.",
+    fields: [...ownHeading, pointsField],
+  },
+  {
+    key: "integrations", kind: "collection", label: "Integrations", icon: "merge", group: "Homepage",
+    description: "Cards on the dark integrations wall, grouped by the Group field.",
+    titleKey: "name", subtitleKey: "group",
+    fields: [
+      { key: "name", label: "Name", type: "text" },
+      { key: "code", label: "Logo code (2–4 letters)", type: "text" },
+      { key: "group", label: "Group", type: "text" },
+      {
+        key: "status", label: "Status", type: "select",
+        options: [
+          { value: "live", label: "Live" },
+          { value: "certified", label: "Certified" },
+          { value: "new", label: "New" },
+          { value: "soon", label: "Soon" },
+        ],
+      },
+      { key: "note", label: "Note", type: "text", wide: true },
+      visible,
+    ],
+  },
+  {
+    key: "sync", kind: "object", label: "Web + Mobile", icon: "monitor", group: "Homepage",
+    description: "Browser and phone mockups with sync highlights.",
+    fields: [...ownHeading, { key: "points", label: "Highlights (one per line)", type: "lines", wide: true }],
+  },
+  {
+    key: "pricing", kind: "object", label: "Pricing", icon: "wallet", group: "Homepage",
+    description: "Price tiles with two buttons.",
+    fields: [
+      ...ownHeading,
+      { key: "primary", label: "Primary button", type: "text" },
+      { key: "secondary", label: "Secondary button", type: "text" },
+      {
+        key: "plans", label: "Price tiles", type: "repeater", wide: true, itemLabel: "label",
+        fields: [
+          { key: "label", label: "Label", type: "text" },
+          { key: "prefix", label: "Prefix (e.g. $)", type: "text" },
+          { key: "amount", label: "Amount", type: "text" },
+          { key: "suffix", label: "Suffix (e.g. /mo)", type: "text" },
+          { key: "note", label: "Note", type: "text", wide: true },
+        ],
+      },
     ],
   },
   {
@@ -267,18 +383,23 @@ export const ADMIN_SECTIONS: AdminSection[] = [
   },
   {
     key: "cta", kind: "object", label: "Final CTA", icon: "rocket", group: "Homepage",
-    description: "The closing call to action band.",
+    description: "Closing book-a-demo section with contact cards and the lead form.",
     fields: [
-      { key: "title", label: "Title", type: "text", wide: true },
+      { key: "eyebrow", label: "Eyebrow", type: "text" },
+      { key: "title", label: "Title", type: "text", wide: true, help: TITLE_HELP },
       { key: "text", label: "Text", type: "textarea", wide: true },
       { key: "primary", label: "Primary button", type: "text" },
       { key: "secondary", label: "Secondary button", type: "text" },
+      { key: "perks", label: "Perks (one per line)", type: "lines", wide: true },
     ],
   },
   {
     key: "headings", kind: "object", label: "Section Headings", icon: "layers", group: "Homepage",
     description: "Eyebrow, title and subtitle for each homepage section.",
     fields: [
+      ...headingFields("challenge", "Challenge"),
+      ...headingFields("dashboard", "Dashboard preview"),
+      ...headingFields("integrations", "Integrations"),
       ...headingFields("benefits", "Benefits"),
       ...headingFields("products", "Products"),
       ...headingFields("usecases", "Use cases"),

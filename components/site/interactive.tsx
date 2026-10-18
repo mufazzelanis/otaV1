@@ -13,14 +13,14 @@ export function FaqList({ items }: { items: Faq[] }) {
         return (
           <div
             key={f.id}
-            className={`rounded-2xl border transition-colors ${isOpen ? "border-brand/30 bg-white shadow-lg shadow-brand/5" : "border-slate-200 bg-surface"}`}
+            className={`rounded-2xl border bg-white transition ${isOpen ? "border-brand/30 shadow-xl shadow-brand/10" : "border-white shadow-sm shadow-slate-900/5 hover:border-brand/20"}`}
           >
             <button
               onClick={() => setOpen(isOpen ? null : f.id)}
               className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
               aria-expanded={isOpen}
             >
-              <span className="font-display text-[15px] font-semibold text-ink">{f.question}</span>
+              <span className={`font-display text-[15px] font-semibold transition-colors ${isOpen ? "text-brand" : "text-ink"}`}>{f.question}</span>
               <span
                 className={`grid h-7 w-7 shrink-0 place-items-center rounded-full transition ${
                   isOpen ? "rotate-45 bg-brand text-white" : "bg-brand/10 text-brand"
@@ -48,7 +48,18 @@ const SUPPLIERS = [
   { icon: TrainFront, label: "Rail" },
 ];
 
-export function VideoButton({ label, brandName }: { label: string; brandName: string }) {
+export function VideoButton({
+  label,
+  brandName,
+  eyebrow = "How a request flows",
+  light = false,
+}: {
+  label: string;
+  brandName: string;
+  eyebrow?: string;
+  /** Pill button for light backgrounds instead of the round play button. */
+  light?: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -60,12 +71,24 @@ export function VideoButton({ label, brandName }: { label: string; brandName: st
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="group inline-flex items-center gap-3 text-sm font-medium text-white">
-        <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-brand-dark animate-pulse-ring transition group-hover:scale-105">
-          <Play className="ml-0.5 h-4 w-4 fill-current" />
-        </span>
-        {label}
-      </button>
+      {light ? (
+        <button
+          onClick={() => setOpen(true)}
+          className="group inline-flex items-center gap-2.5 rounded-full border border-brand/15 bg-white/70 py-2 pl-2 pr-6 text-sm font-semibold text-ink shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-brand/30 hover:bg-white"
+        >
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
+            <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
+          </span>
+          {label}
+        </button>
+      ) : (
+        <button onClick={() => setOpen(true)} className="group inline-flex items-center gap-3 text-sm font-medium text-white">
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-brand-dark animate-pulse-ring transition group-hover:scale-105">
+            <Play className="ml-0.5 h-4 w-4 fill-current" />
+          </span>
+          {label}
+        </button>
+      )}
 
       {open && (
         <div className="fixed inset-0 z-60 grid place-items-center bg-black/70 p-4 backdrop-blur-sm animate-fade-up" onClick={() => setOpen(false)}>
@@ -73,7 +96,7 @@ export function VideoButton({ label, brandName }: { label: string; brandName: st
             <button onClick={() => setOpen(false)} className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="Close">
               <X className="h-5 w-5" />
             </button>
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent">How a request flows</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">{eyebrow}</p>
             <h3 className="mt-2 font-display text-2xl font-bold text-white">One call in, every supplier out.</h3>
 
             <div className="mt-10 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-2 sm:gap-4">
