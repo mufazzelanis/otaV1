@@ -131,6 +131,8 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "primaryCta", label: "Primary button", type: "text" },
       { key: "secondaryCta", label: "Secondary button", type: "text" },
       { key: "trustPoints", label: "Trust points (one per line)", type: "lines", wide: true },
+      { key: "bgImage", label: "Background photo", type: "text", wide: true, help: "Path in /public (e.g. /images/hero-sky.jpg) or a full https:// URL. Also used as the video poster." },
+      { key: "bgVideo", label: "Background video (optional)", type: "text", wide: true, help: "MP4 or WebM URL, e.g. /videos/hero.mp4. Plays muted on loop; leave empty to show the photo." },
     ],
   },
   {

@@ -56,6 +56,10 @@ export type Hero = {
   secondaryCta: string;
   videoLabel: string;
   trustPoints: string[];
+  /** Background photo (also the video poster). A path in /public or a full URL. */
+  bgImage: string;
+  /** Optional looping background video (MP4/WebM URL). Leave empty for the photo only. */
+  bgVideo: string;
 };
 
 export type Stat = { id: string; value: number; suffix: string; prefix: string; label: string; visible: boolean };

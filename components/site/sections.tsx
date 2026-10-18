@@ -4,7 +4,8 @@ import { Icon, TONES } from "@/lib/icons";
 import type { CompareMark, Content } from "@/lib/types";
 import { Container, Eyebrow, Heading } from "./heading";
 import { Reveal } from "./reveal";
-import { HeroArt } from "./mockups";
+import { SkyBackdrop } from "./mockups";
+import { HeroOrbit } from "./hero-orbit";
 import { LeadForm } from "./lead-form";
 import { CountUp } from "./count-up";
 import { FaqList, VideoButton } from "./interactive";
@@ -13,13 +14,10 @@ const visible = <T extends { visible: boolean }>(xs: T[]) => xs.filter((x) => x.
 
 export function HeroSection({ c }: { c: Content }) {
   const { hero } = c;
-  const satellites = visible(c.products).map((p) => ({ icon: p.icon, label: p.name.replace(/ API$/, "") }));
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-28">
-      <div className="sky-bg absolute inset-0 -z-10" />
-      <div className="sky-grid absolute inset-0 -z-10" />
-      <div className="absolute -left-24 top-1/3 -z-10 h-72 w-72 rounded-full bg-white blur-3xl" />
-      <Container className="relative grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+    <section className="relative overflow-hidden pt-32 pb-20 lg:pt-36 lg:pb-24">
+      <SkyBackdrop image={hero.bgImage} video={hero.bgVideo} />
+      <Container className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
         <div>
           <Link
             href="/#products"
@@ -69,7 +67,7 @@ export function HeroSection({ c }: { c: Content }) {
         </div>
 
         <div className="relative animate-fade-up" style={{ animationDelay: "250ms" }}>
-          <HeroArt satellites={satellites} logoText={c.settings.logoText} />
+          <HeroOrbit logoText={c.settings.logoText} />
         </div>
       </Container>
     </section>

@@ -51,6 +51,8 @@ export const DEFAULT_CONTENT: Content = {
     secondaryCta: "Explore the API",
     videoLabel: "Watch the 60-second tour",
     trustPoints: ["No GDS contract needed", "Flat fee, never a percentage", "Free sandbox in minutes"],
+    bgImage: "/images/hero-sky.jpg",
+    bgVideo: "",
   },
 
   stats: [

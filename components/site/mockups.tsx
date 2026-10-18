@@ -1,5 +1,4 @@
 import { Bell, CalendarDays, CheckCircle2, CreditCard, LayoutGrid, Search, Settings, TrendingUp, Users, Wifi } from "lucide-react";
-import { Icon } from "@/lib/icons";
 
 // Illustrative product mockups for the homepage. The figures are sample data
 // that make the visuals feel alive; nothing here is read from the API.
@@ -59,138 +58,71 @@ export function TrendChart({ id, height = 120, data = TREND, labels }: { id: str
   );
 }
 
-/* ── Hero: orbit of products + floating live card ─────────────────────────── */
+/* ── Hero sky: photo or looping video, flight paths and passing jets ─────── */
 
-type Satellite = { icon: string; label: string };
-
-// Angles (deg) for up to five satellites, kept on the side the live card doesn't cover.
-const ANGLES = [-90, -140, 180, 140, 90];
-const HUB = { x: 36, y: 50 };
-const RADIUS = 30;
-
-export function HeroArt({ satellites, logoText }: { satellites: Satellite[]; logoText: string }) {
-  const sats = satellites.slice(0, ANGLES.length).map((s, i) => {
-    const a = (ANGLES[i] * Math.PI) / 180;
-    return { ...s, x: HUB.x + RADIUS * Math.cos(a), y: HUB.y + RADIUS * Math.sin(a) };
-  });
-
+function Jet({ className }: { className: string }) {
   return (
-    <div className="relative mx-auto w-full max-w-[580px]">
-      <div className="relative hidden aspect-square sm:block">
-        {/* Orbit rings + animated spokes */}
-        <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden>
-          <circle cx={HUB.x} cy={HUB.y} r={RADIUS} fill="none" stroke="var(--brand)" strokeOpacity="0.18" strokeWidth="0.25" strokeDasharray="1 1.2" />
-          <circle cx={HUB.x} cy={HUB.y} r={RADIUS - 13} fill="none" stroke="var(--brand)" strokeOpacity="0.12" strokeWidth="0.2" />
-          {sats.map((s, i) => (
-            <line
-              key={i}
-              x1={HUB.x}
-              y1={HUB.y}
-              x2={s.x}
-              y2={s.y}
-              stroke="var(--brand)"
-              strokeOpacity="0.28"
-              strokeWidth="0.25"
-              strokeDasharray="1 1"
-              className="animate-dash"
-            />
-          ))}
-        </svg>
-
-        {/* Hub */}
-        <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${HUB.x}%`, top: `${HUB.y}%` }}>
-          <span className="absolute inset-0 rounded-full bg-brand/25 animate-ping [animation-duration:3s]" />
-          <div className="relative grid h-24 w-24 place-items-center rounded-full bg-[radial-gradient(circle_at_30%_25%,color-mix(in_oklab,var(--brand)_70%,white),var(--brand-dark)_70%)] shadow-2xl shadow-brand/40 ring-8 ring-white/70">
-            <span className="font-display text-2xl font-extrabold tracking-tight text-white">{logoText}</span>
-          </div>
-        </div>
-
-        {/* Satellites */}
-        {sats.map((s, i) => (
-          <div
-            key={s.label}
-            className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5 animate-float-slow"
-            style={{ left: `${s.x}%`, top: `${s.y}%`, animationDelay: `${i * -1.4}s` }}
-          >
-            <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-brand shadow-lg shadow-brand/15 ring-1 ring-slate-100">
-              <Icon name={s.icon} className="h-5 w-5" />
-            </span>
-            <span className="whitespace-nowrap rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-ink shadow-sm ring-1 ring-slate-100">{s.label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Live card: overlaps the orbit on larger screens, stands alone on phones. */}
-      <div className="relative mx-auto w-full max-w-[320px] sm:absolute sm:right-0 sm:top-[8%] sm:mx-0 sm:w-[54%] lg:animate-float">
-        <LiveCard />
-      </div>
-    </div>
+    <svg viewBox="0 0 120 48" fill="none" className={className}>
+      <ellipse cx="58" cy="24" rx="55" ry="9" fill="#ffffff" opacity=".95" />
+      <path d="M110 24 Q122 24 120 21 Q110 14 100 20 Z" fill="#f0f8ff" />
+      <path d="M10 24 Q4 24 3 19 Q8 11 18 19 Z" fill="#ddeeff" />
+      <path d="M46 24 Q62 6 88 2 Q96 1 98 8 Q78 16 70 24 Z" fill="#e8f4ff" opacity=".9" />
+      <path d="M46 24 Q62 40 88 44 Q96 45 98 38 Q78 32 70 24 Z" fill="#e8f4ff" opacity=".75" />
+      <path d="M16 24 Q22 16 36 14 Q40 13 41 18 Q30 21 26 24 Z" fill="#ddeeff" opacity=".85" />
+      <path d="M16 24 Q22 32 36 34 Q40 35 41 30 Q30 28 26 24 Z" fill="#ddeeff" opacity=".7" />
+      <ellipse cx="60" cy="32" rx="10" ry="3.5" fill="#c8dff0" opacity=".8" />
+      {[74, 82, 90, 98].map((x) => (
+        <circle key={x} cx={x} cy="21" r="2.2" fill="rgba(100,160,220,.5)" />
+      ))}
+    </svg>
   );
 }
 
-const BARS = [38, 52, 44, 63, 55, 78, 70, 92];
-
-function LiveCard() {
+export function SkyBackdrop({ image, video }: { image: string; video: string }) {
   return (
-    <div className="rounded-3xl border border-white bg-white/90 p-4 shadow-2xl shadow-brand/20 backdrop-blur-xl">
-      <div className="flex items-start gap-3">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-linear-to-br from-emerald-400 to-teal-500 text-white shadow-md shadow-emerald-500/30">
-          <CreditCard className="h-5 w-5" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-bold text-ink">Live bookings</p>
-          <p className="truncate text-[11px] text-muted">Search · book · ticket</p>
-        </div>
-        <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600 ring-1 ring-emerald-200">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-blink" /> Live
-        </span>
-      </div>
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#dce9f7]" aria-hidden>
+      {/* Media layer */}
+      {video ? (
+        <video
+          className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+          src={video}
+          poster={image || undefined}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      ) : image ? (
+        // eslint-disable-next-line @next/next/no-img-element -- admin may point this at any URL; it is the LCP backdrop
+        <img src={image} alt="" fetchPriority="high" decoding="async" className="absolute inset-0 h-full w-full object-cover object-[center_35%]" />
+      ) : null}
 
-      <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-        {[
-          ["1,284", "Bookings"],
-          ["+$48K", "This month"],
-          ["642ms", "Avg search"],
-        ].map(([v, l], i) => (
-          <div key={l} className="rounded-xl border border-slate-100 bg-slate-50/80 px-1 py-2.5">
-            <p className={`font-display text-sm font-extrabold sm:text-base ${i === 1 ? "text-emerald-600" : "text-brand"}`}>{v}</p>
-            <p className="mt-0.5 text-[9px] font-medium uppercase tracking-wide text-muted">{l}</p>
-          </div>
-        ))}
-      </div>
+      {/* Wash: keeps the left column readable and fades into the page */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(240_247_255/0.15)_0%,rgb(240_247_255/0.35)_35%,rgb(240_247_255/0.78)_65%,rgb(240_247_255/0.96)_100%),linear-gradient(to_right,rgb(240_247_255/0.92)_0%,rgb(240_247_255/0.55)_45%,rgb(240_247_255/0.08)_100%)] max-lg:bg-[linear-gradient(to_bottom,rgb(240_247_255/0.55),rgb(240_247_255/0.92))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle,color-mix(in_oklab,var(--brand)_10%,transparent)_0.8px,transparent_1px)] bg-size-[60px_60px]" />
 
-      <div className="mt-3 space-y-2">
-        <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-2.5">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-ink">DAC → DXB · Flight</span>
-            <span className="font-bold text-emerald-600">+$842</span>
-          </div>
-          <div className="mt-1 flex items-center justify-between text-[10px] text-muted">
-            <span>1 adult · Economy</span>
-            <span className="font-semibold text-emerald-600">Ticketed</span>
-          </div>
-        </div>
-        <div className="rounded-xl border border-slate-100 bg-white p-2.5">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-ink">Bali · Hotel · 4 nights</span>
-            <span className="font-bold text-ink">+$756</span>
-          </div>
-          <div className="mt-1 flex items-center justify-between text-[10px] text-muted">
-            <span>2 adults · Refundable</span>
-            <span className="font-semibold text-brand">Confirming</span>
-          </div>
-        </div>
-      </div>
+      {/* Animated flight paths */}
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+        <defs>
+          <linearGradient id="flightPath" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--brand)" stopOpacity="0" />
+            <stop offset="50%" stopColor="var(--brand)" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path className="flight-path" d="M-50,680 Q420,180 920,380 T1520,130" />
+        <path className="flight-path b" d="M-50,280 Q320,720 720,480 T1520,720" />
+        <path className="flight-path c" d="M180,920 Q580,380 980,580 T1420,260" />
+      </svg>
 
-      <div className="mt-3 flex h-12 items-end gap-1.5">
-        {BARS.map((h, i) => (
-          <span
-            key={i}
-            className={`flex-1 origin-bottom rounded-t-md animate-grow ${i >= BARS.length - 2 ? "bg-linear-to-t from-emerald-400 to-emerald-300" : "bg-linear-to-t from-brand/40 to-brand/25"}`}
-            style={{ height: `${h}%`, animationDelay: `${300 + i * 80}ms` }}
-          />
-        ))}
-      </div>
+      {/* Two jets crossing with contrails */}
+      <span className="hero-contrail" />
+      <span className="hero-contrail c2" />
+      <Jet className="hero-jet" />
+      <Jet className="hero-jet j2" />
+
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-b from-transparent to-white" />
     </div>
   );
 }
